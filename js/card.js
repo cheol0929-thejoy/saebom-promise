@@ -80,7 +80,7 @@
     lg.addColorStop(0, C.b1); lg.addColorStop(0.38, C.b2); lg.addColorStop(0.74, C.b3); lg.addColorStop(1, C.b4);
     ctx.fillStyle = lg; ctx.fillRect(0, 0, W, H);
 
-    const bloom = ctx.createRadialGradient(W * 0.82, -H * 0.05, 0, W * 0.82, -H * 0.05, W * 1.05);
+    const bloom = ctx.createRadialGradient(W * 0.5, -H * 0.05, 0, W * 0.5, -H * 0.05, W * 1.05);
     bloom.addColorStop(0, 'rgba(150,200,255,0.34)'); bloom.addColorStop(1, 'rgba(150,200,255,0)');
     ctx.fillStyle = bloom; ctx.fillRect(0, 0, W, H);
 
@@ -141,7 +141,7 @@
     // 머리: 수평선과 별, 그 아래 한 줄
     const story = format === 'story';
     const hy = story ? 230 : 92;
-    drawHorizon(ctx, W, hy, W * 0.64, story ? 34 : 28);
+    drawHorizon(ctx, W, hy, W * 0.5, story ? 34 : 28);
     ctx.fillStyle = 'rgba(255,255,255,0.82)';
     ctx.font = `500 ${story ? 30 : 26}px ${SANS}`;
     spaced(ctx, `${cfg.YEAR} ${cfg.CHURCH} 약속의 말씀`, W / 2, hy + (story ? 78 : 62), story ? 8 : 7);

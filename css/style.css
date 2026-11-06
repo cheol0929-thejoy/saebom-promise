@@ -29,7 +29,7 @@ body {
   color: var(--white);
   background-color: var(--blue-3);
   background-image:
-    radial-gradient(110% 60% at 82% -8%, rgba(150, 200, 255, .30), transparent 62%),
+    radial-gradient(110% 60% at 50% -8%, rgba(150, 200, 255, .30), transparent 62%),
     radial-gradient(80% 50% at -10% 105%, rgba(5, 20, 55, .55), transparent 70%),
     linear-gradient(168deg, var(--blue-1) 0%, var(--blue-2) 38%, var(--blue-3) 74%, var(--blue-4) 100%);
   min-height: 100vh;
@@ -49,7 +49,7 @@ body::before {
 .horizon { position: relative; height: 56px; margin: 0 -24px 34px; }
 .horizon::before {
   content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--line) 18%, rgba(255,255,255,.55) 64%, var(--line) 82%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--line) 18%, rgba(255,255,255,.55) 50%, var(--line) 82%, transparent 100%);
 }
 .star { position: absolute; top: 50%; left: 64%; width: 44px; height: 44px; transform: translate(-50%, -50%); color: var(--white);
   filter: drop-shadow(0 0 10px rgba(190, 225, 255, .85)) drop-shadow(0 0 26px rgba(150, 200, 255, .45)); }
@@ -103,7 +103,7 @@ input[type=text]:focus { outline: 2px solid rgba(255,255,255,.9); outline-offset
 .face::after { content: ""; position: absolute; inset: 12px; border-radius: 12px; pointer-events: none; }
 .back {
   background:
-    radial-gradient(90% 55% at 70% 0%, rgba(160, 205, 255, .35), transparent 65%),
+    radial-gradient(90% 55% at 50% 0%, rgba(160, 205, 255, .35), transparent 65%),
     linear-gradient(172deg, #2069b8 0%, #154f98 45%, #0b2f66 100%);
   display: flex; align-items: center; justify-content: center;
 }
