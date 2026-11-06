@@ -64,6 +64,8 @@ h2 { font-family: var(--serif); font-weight: 500; font-size: 25px; letter-spacin
 /* 입력 */
 .form { text-align: center; width: 236px; max-width: 100%; margin: 0 auto; }   /* 제목 '약속의 말씀' 너비에 맞춤(스크립트가 실제 너비로 다시 맞춤) */
 #title-line { display: inline-block; }
+/* 머리 묶음(별·연도·제목·안내)을 0.5cm 위로 */
+#start .horizon, #start .eyebrow, #start h1, #start .lead { position: relative; top: -1cm; }  /* 이름 글자를 지워 화면이 0.5cm 내려간 만큼까지 보정 */
 .form input[type=text] { font-size: 19px; padding: 11px 12px; border-radius: 12px; }
 .form .btn { min-height: 50px; padding: 9px 12px; font-size: 18px; border-radius: 12px; margin-top: 12px; }
 label { display: block; font-size: 16px; letter-spacing: .2em; color: var(--mist); margin: 0 0 12px; padding-left: .2em; text-align: center; }
