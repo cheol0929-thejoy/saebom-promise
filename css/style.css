@@ -147,5 +147,5 @@ input[type=text]:focus { outline: 2px solid rgba(255,255,255,.9); outline-offset
 }
 
 /* 새봄교회 로고: 시작 화면 맨 아래 가운데, 파란 배경에 맞춰 흰색 단색 */
-#start { position: relative; padding-bottom: 76px; }
-.church-logo { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); width: 112px; height: auto; opacity: .82; pointer-events: none; user-select: none; }
+#start { position: relative; padding-bottom: 96px; }
+.church-logo { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); width: 168px; height: auto; opacity: .82; pointer-events: none; user-select: none; }
