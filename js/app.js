@@ -249,3 +249,18 @@
   window.SaebomApp = { parseCSV, toVerses };
   document.addEventListener('DOMContentLoaded', init);
 })();
+
+// 이름 칸과 '말씀 받기' 버튼을 제목 '약속의 말씀'의 너비에 맞춥니다.
+(function () {
+  function fit() {
+    const t = document.getElementById('title-line');
+    const f = document.getElementById('start-form');
+    if (!t || !f) return;
+    const w = t.getBoundingClientRect().width;
+    if (w > 0) f.style.width = Math.round(w) + 'px';
+  }
+  document.addEventListener('DOMContentLoaded', fit);
+  window.addEventListener('resize', fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  window.addEventListener('load', fit);
+})();

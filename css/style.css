@@ -62,7 +62,10 @@ h2 { font-family: var(--serif); font-weight: 500; font-size: 25px; letter-spacin
 .lead { margin: 0 0 40px; color: var(--mist); font-size: 19px; }
 
 /* 입력 */
-.form { text-align: center; }
+.form { text-align: center; width: 236px; max-width: 100%; margin: 0 auto; }   /* 제목 '약속의 말씀' 너비에 맞춤(스크립트가 실제 너비로 다시 맞춤) */
+#title-line { display: inline-block; }
+.form input[type=text] { font-size: 19px; padding: 11px 12px; border-radius: 12px; }
+.form .btn { min-height: 50px; padding: 9px 12px; font-size: 18px; border-radius: 12px; margin-top: 12px; }
 label { display: block; font-size: 16px; letter-spacing: .2em; color: var(--mist); margin: 0 0 12px; padding-left: .2em; text-align: center; }
 input[type=text] {
   width: 100%; font: inherit; font-size: 24px; padding: 15px 18px; border-radius: 14px; border: 0;
