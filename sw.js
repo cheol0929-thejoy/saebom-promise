@@ -1,5 +1,5 @@
 // 새봄약속 서비스 워커 — 예배당 와이파이가 끊겨도 화면이 열리도록 앱 파일을 저장해 둡니다.
-const VERSION = 'saebom-promise-v3';
+const VERSION = 'saebom-promise-v4';
 const SHELL = [
   './',
   'index.html',
@@ -11,6 +11,8 @@ const SHELL = [
   'manifest.webmanifest',
   'icons/icon-192.png',
   'icons/icon-512.png',
+  'fonts/SeoulHangang-Medium.woff2',
+  'fonts/SeoulHangang-Bold.woff2',
 ];
 
 self.addEventListener('install', (e) => {

@@ -6,8 +6,8 @@
     line: 'rgba(21,79,152,0.22)',
   };
 
-  const SERIF = '"Noto Serif KR", serif';
-  const SANS = '"Noto Sans KR", sans-serif';
+  const SERIF = '"Seoul Hangang", "Noto Serif KR", serif';
+  const SANS = '"Seoul Hangang", "Noto Serif KR", serif';
 
   async function ensureFonts() {
     if (!document.fonts) return;
@@ -201,7 +201,7 @@
     // 바닥글
     ctx.fillStyle = 'rgba(255,255,255,0.55)';
     ctx.font = `500 24px ${SANS}`;
-    spaced(ctx, `${cfg.APP_NAME}  ·  개역개정`, W / 2, H - (story ? 170 : 38), 6);
+    spaced(ctx, `${cfg.APP_NAME}  ·  개역개정  ·  서울한강체`, W / 2, H - (story ? 170 : 38), 6);
     return cv;
   }
 
