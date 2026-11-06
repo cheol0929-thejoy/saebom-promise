@@ -57,7 +57,7 @@ body::before {
 
 .who { font-size: 17px; letter-spacing: .06em; color: var(--mist); margin: 0 0 10px; }
 .eyebrow { font-size: 30px; font-weight: 500; line-height: 1.2; letter-spacing: .32em; color: var(--mist); margin: 0 0 16px; padding-left: .32em; }
-h1 { font-family: var(--serif); font-weight: 500; font-size: 46px; letter-spacing: .06em; margin: 0 0 18px; line-height: 1.2; }
+h1 { font-family: var(--serif); font-weight: 500; font-size: 37.6px; letter-spacing: .06em; padding-left: .06em; margin: 0 0 18px; line-height: 1.2; }
 h2 { font-family: var(--serif); font-weight: 500; font-size: 25px; letter-spacing: .02em; margin: 0 0 30px; line-height: 1.55; }
 .lead { margin: 0 0 40px; color: var(--mist); font-size: 19px; }
 

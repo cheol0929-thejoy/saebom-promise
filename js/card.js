@@ -241,7 +241,7 @@
     spaced(ctx, String(cfg.YEAR), W / 2 + 12, 500, 26);
 
     ctx.fillStyle = '#ffffff';
-    ctx.font = `500 124px ${SERIF}`;
+    ctx.font = `500 101px ${SERIF}`;
     spaced(ctx, '약속의 말씀', W / 2, 670, 8);
 
     // 받은 말씀: 이름 → 본문 → 장절 → 축복 한 줄을 한 묶음으로 가운데에
