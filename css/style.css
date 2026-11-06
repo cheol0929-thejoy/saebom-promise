@@ -147,5 +147,15 @@ input[type=text]:focus { outline: 2px solid rgba(255,255,255,.9); outline-offset
 }
 
 /* 새봄교회 로고: 시작 화면 맨 아래 가운데, 파란 배경에 맞춰 흰색 단색 */
-#start { position: relative; padding-bottom: 96px; }
+#start, #result { position: relative; padding-bottom: 96px; }
 .church-logo { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); width: 168px; height: auto; opacity: .82; pointer-events: none; user-select: none; }
+
+/* 결과 화면: 시작 화면과 같은 머리 + 그 아래에 약속의 말씀 */
+.promise { margin: 10px auto 0; max-width: 340px; }
+.promise .note { margin: 0 0 14px; }
+.p-name { color: var(--mist); font-size: 17px; letter-spacing: .1em; margin: 0 0 22px; }
+.p-text { font-family: var(--serif); font-weight: 700; font-size: 23px; line-height: 1.8; margin: 0 0 24px; word-break: keep-all; color: var(--white); }
+.p-ref { display: inline-flex; align-items: center; gap: 12px; font-family: var(--serif); font-weight: 700; font-size: 19px; letter-spacing: .06em; margin: 0 0 14px; color: var(--white); }
+.p-ref::before, .p-ref::after { content: ""; width: 24px; height: 1px; background: rgba(255,255,255,.5); }
+.p-bless { color: var(--mist); font-size: 17px; line-height: 1.7; margin: 0; word-break: keep-all; }
+#result .actions { margin-top: 34px; }

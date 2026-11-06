@@ -129,6 +129,7 @@
    * format: 'story'(1080×1920, 배경화면) | 'post'(1080×1350, 공유용)
    */
   async function render(verse, name, format) {
+    if (format === 'screen') return renderScreen(verse, name);
     await ensureFonts();
     const cfg = window.APP_CONFIG;
     const W = 1080, H = format === 'story' ? 1920 : 1350;
@@ -202,6 +203,94 @@
     ctx.fillStyle = 'rgba(255,255,255,0.55)';
     ctx.font = `500 24px ${SANS}`;
     spaced(ctx, `${cfg.APP_NAME}  ·  개역개정  ·  서울한강체`, W / 2, H - (story ? 170 : 38), 6);
+    return cv;
+  }
+
+
+  // 새봄교회 로고(흰색) — 한 번만 불러 둡니다.
+  let logoPromise = null;
+  function loadLogo() {
+    if (logoPromise) return logoPromise;
+    logoPromise = new Promise((res) => {
+      const img = new Image();
+      img.onload = () => res(img);
+      img.onerror = () => res(null);
+      img.src = (window.SAEBOM_LOGO_SRC || 'images/saebom-logo.png');
+    });
+    return logoPromise;
+  }
+
+  /**
+   * 앱 화면과 같은 모양의 그림(1080×1920):
+   * 수평선과 별 → 연도 → '약속의 말씀' → 받은 말씀 → 새봄교회 로고
+   */
+  async function renderScreen(verse, name) {
+    await ensureFonts();
+    const cfg = window.APP_CONFIG;
+    const W = 1080, H = 1920;
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d');
+    drawBackground(ctx, W, H);
+    ctx.textAlign = 'center';
+
+    drawHorizon(ctx, W, 290, W * 0.5, 52);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.72)';
+    ctx.font = `500 80px ${SERIF}`;
+    spaced(ctx, String(cfg.YEAR), W / 2 + 12, 500, 26);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `500 124px ${SERIF}`;
+    spaced(ctx, '약속의 말씀', W / 2, 670, 8);
+
+    // 받은 말씀: 이름 → 본문 → 장절 → 축복 한 줄을 한 묶음으로 가운데에
+    const top = 780, bottom = 1560, innerW = 860;
+    const nameH = name ? 100 : 0;
+    const bl = verse.blessing ? fitText(ctx, verse.blessing, innerW, 150, 44, 34, 500, SANS, 1.6) : null;
+    const tailH = 70 + 54 + (bl ? 40 + bl.lines.length * bl.lh : 0);
+    const fit = fitText(ctx, verse.text, innerW, bottom - top - nameH - tailH, 66, 40, 700, SERIF, 1.75);
+    const groupH = nameH + fit.lines.length * fit.lh + tailH;
+    let y = top + Math.max(0, (bottom - top - groupH) / 2);
+
+    if (name) {
+      ctx.fillStyle = 'rgba(255,255,255,0.72)';
+      ctx.font = `500 44px ${SANS}`;
+      spaced(ctx, `${name} 님께 주신 말씀`, W / 2, y + 44, 4);
+      y += nameH;
+    }
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `700 ${fit.size}px ${SERIF}`;
+    let ty = y + fit.size;
+    for (const ln of fit.lines) { ctx.fillText(ln, W / 2, ty); ty += fit.lh; }
+
+    const refY = ty - fit.lh + 70 + 54;
+    ctx.font = `700 52px ${SERIF}`;
+    ctx.fillText(verse.ref, W / 2, refY);
+    const rw = ctx.measureText(verse.ref).width / 2 + 30;
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.fillRect(W / 2 - rw - 64, refY - 17, 64, 2); ctx.fillRect(W / 2 + rw, refY - 17, 64, 2);
+
+    if (bl) {
+      ctx.fillStyle = 'rgba(255,255,255,0.72)';
+      ctx.font = `500 ${bl.size}px ${SANS}`;
+      let by = refY + 40 + bl.lh;
+      for (const ln of bl.lines) { ctx.fillText(ln, W / 2, by); by += bl.lh; }
+    }
+
+    // 맨 아래 가운데 새봄교회 로고
+    const logo = await loadLogo();
+    if (logo) {
+      const lw = 420, lh = lw * logo.naturalHeight / logo.naturalWidth;
+      ctx.save(); ctx.globalAlpha = 0.85;
+      ctx.drawImage(logo, (W - lw) / 2, 1790 - lh, lw, lh);
+      ctx.restore();
+    }
+
+    ctx.fillStyle = 'rgba(255,255,255,0.45)';
+    ctx.font = `500 22px ${SANS}`;
+    spaced(ctx, '개역개정  ·  글꼴 서울한강체 ⓒ서울특별시', W / 2, H - 50, 4);
     return cv;
   }
 

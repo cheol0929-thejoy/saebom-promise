@@ -165,6 +165,7 @@
   async function showResult(again) {
     const { verse, name } = current;
     $('#again-note').hidden = !again;
+    document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = cfg.YEAR; });
     $('#result-name').textContent = `${name} 님께 주신 말씀`;
     $('#result-text').textContent = verse.text;
     $('#result-ref').textContent = verse.ref;
@@ -175,7 +176,7 @@
   async function makeImage(format) {
     const cv = await window.PromiseCard.render(current.verse, current.name, format);
     const blob = await window.PromiseCard.toBlob(cv);
-    const fname = `${cfg.APP_NAME}_${cfg.YEAR}_${current.name}${format === 'story' ? '_배경화면' : ''}.png`;
+    const fname = `${cfg.APP_NAME}_${cfg.YEAR}_${current.name}.png`;
     return new File([blob], fname, { type: 'image/png' });
   }
 
@@ -194,7 +195,7 @@
   }
 
   async function share() {
-    const file = await makeImage('post');
+    const file = await makeImage('screen');
     const text = `${cfg.YEAR} 약속의 말씀\n${current.verse.text}\n(${current.verse.ref})`;
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       try { await navigator.share({ files: [file], text }); return; } catch (e) {
@@ -234,10 +235,7 @@
     });
     $('#share-btn').addEventListener('click', (e) => busy(e.currentTarget, share));
     $('#save-btn').addEventListener('click', (e) => busy(e.currentTarget, async () => {
-      download(await makeImage('post')); toast('사진첩(다운로드)에 저장했습니다.');
-    }));
-    $('#wall-btn').addEventListener('click', (e) => busy(e.currentTarget, async () => {
-      download(await makeImage('story')); toast('배경화면용 이미지를 저장했습니다.');
+      download(await makeImage('screen')); toast('그림 파일로 저장했습니다. 사진첩(다운로드)에서 확인하세요.');
     }));
     $('#other-btn').addEventListener('click', () => { $('#name').value = ''; show('start'); $('#name').focus(); });
 

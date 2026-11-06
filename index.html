@@ -60,21 +60,25 @@
 
     <!-- 3. 결과 -->
     <section id="result" class="screen" hidden>
-      <p id="again-note" class="note" hidden>이미 받으신 말씀입니다.</p>
-      <article class="paper">
-        <p id="result-name" class="f-name"></p>
-        <p id="result-text" class="f-text"></p>
-        <p id="result-ref" class="f-ref"></p>
-        <p id="result-bless" class="f-bless"></p>
-      </article>
+      <div class="horizon" aria-hidden="true"><svg class="star center" viewBox="-50 -50 100 100" aria-hidden="true"><path d="M0-48C3-14 14-3 48 0 14 3 3 14 0 48-3 14-14 3-48 0-14-3-3-14 0-48Z" fill="currentColor"/></svg></div>
+      <p class="eyebrow"><span data-year>2027</span></p>
+      <h1>약속의 말씀</h1>
+
+      <!-- 시작 화면의 안내 문구·이름 칸 자리에 받은 약속의 말씀을 적습니다 -->
+      <div class="promise">
+        <p id="again-note" class="note" hidden>이미 받으신 말씀입니다.</p>
+        <p id="result-name" class="p-name"></p>
+        <p id="result-text" class="p-text"></p>
+        <p id="result-ref" class="p-ref"></p>
+        <p id="result-bless" class="p-bless"></p>
+      </div>
 
       <div class="actions">
-        <button id="share-btn" class="btn primary" type="button">카카오톡 등으로 보내기</button>
-        <button id="save-btn" class="btn" type="button">사진으로 저장</button>
-        <button id="wall-btn" class="btn" type="button">배경화면용으로 저장</button>
+        <button id="save-btn" class="btn primary" type="button">그림으로 저장</button>
+        <button id="share-btn" class="btn" type="button">카카오톡 등으로 보내기</button>
         <button id="other-btn" class="btn ghost" type="button">다른 사람 이름으로 뽑기</button>
       </div>
-      <p class="foot">개역개정<br>글꼴 서울한강체 ⓒ서울특별시</p>
+      <img class="church-logo" src="images/saebom-logo.png" alt="새봄교회" width="585" height="197">
     </section>
 
     <div id="toast" class="toast" role="status" hidden></div>
