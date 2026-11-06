@@ -56,7 +56,7 @@ body::before {
 .star.center { left: 50%; }
 
 .who { font-size: 17px; letter-spacing: .06em; color: var(--mist); margin: 0 0 10px; }
-.eyebrow { font-size: 15px; font-weight: 500; letter-spacing: .32em; color: var(--mist); margin: 0 0 14px; padding-left: .32em; }
+.eyebrow { font-size: 30px; font-weight: 500; line-height: 1.2; letter-spacing: .32em; color: var(--mist); margin: 0 0 16px; padding-left: .32em; }
 h1 { font-family: var(--serif); font-weight: 500; font-size: 46px; letter-spacing: .06em; margin: 0 0 18px; line-height: 1.2; }
 h2 { font-family: var(--serif); font-weight: 500; font-size: 25px; letter-spacing: .02em; margin: 0 0 30px; line-height: 1.55; }
 .lead { margin: 0 0 40px; color: var(--mist); font-size: 19px; }
@@ -145,3 +145,7 @@ input[type=text]:focus { outline: 2px solid rgba(255,255,255,.9); outline-offset
   .face { transition-duration: .01s; }
   .back-tap { animation: none; }
 }
+
+/* 새봄교회 로고: 시작 화면 맨 아래 가운데, 파란 배경에 맞춰 흰색 단색 */
+#start { position: relative; padding-bottom: 76px; }
+.church-logo { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); width: 112px; height: auto; opacity: .82; pointer-events: none; user-select: none; }
