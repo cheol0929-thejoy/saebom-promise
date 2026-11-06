@@ -234,18 +234,19 @@
     drawBackground(ctx, W, H);
     ctx.textAlign = 'center';
 
-    drawHorizon(ctx, W, 290, W * 0.5, 52);
+    const UP = 52; // 0.5cm 위로 (휴대폰 화면 기준)
+    drawHorizon(ctx, W, 290 - UP, W * 0.5, 52);
 
     ctx.fillStyle = 'rgba(255,255,255,0.72)';
     ctx.font = `500 80px ${SERIF}`;
-    spaced(ctx, String(cfg.YEAR), W / 2 + 12, 500, 26);
+    spaced(ctx, String(cfg.YEAR), W / 2 + 12, 500 - UP, 26);
 
     ctx.fillStyle = '#ffffff';
     ctx.font = `500 101px ${SERIF}`;
-    spaced(ctx, '약속의 말씀', W / 2, 670, 8);
+    spaced(ctx, '약속의 말씀', W / 2, 670 - UP, 8);
 
     // 받은 말씀: 이름 → 본문 → 장절 → 축복 한 줄을 한 묶음으로 가운데에
-    const top = 780, bottom = 1560, innerW = 860;
+    const top = 780 - UP, bottom = 1560 - UP, innerW = 860;
     const nameH = name ? 100 : 0;
     const bl = verse.blessing ? fitText(ctx, verse.blessing, innerW, 150, 44, 34, 500, SANS, 1.6) : null;
     const tailH = 70 + 54 + (bl ? 40 + bl.lines.length * bl.lh : 0);
@@ -288,9 +289,6 @@
       ctx.restore();
     }
 
-    ctx.fillStyle = 'rgba(255,255,255,0.45)';
-    ctx.font = `500 22px ${SANS}`;
-    spaced(ctx, '개역개정  ·  글꼴 서울한강체 ⓒ서울특별시', W / 2, H - 50, 4);
     return cv;
   }
 
