@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>새봄약속 — 약속의 말씀 뽑기</title>
+  <meta name="description" content="새봄교회 송구영신 약속의 말씀 뽑기">
+  <meta name="theme-color" content="#141b3a">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="wrap">
+
+    <!-- 1. 시작 -->
+    <section id="start" class="screen">
+      <div class="sun" aria-hidden="true"></div>
+      <p class="eyebrow"><span data-year>2027</span> 새봄교회</p>
+      <h1>약속의 말씀</h1>
+      <p class="lead">하나님께서 새해에 주시는<br>말씀 한 구절을 받아 보세요.</p>
+
+      <form id="start-form" class="panel" autocomplete="off">
+        <label for="name">이름</label>
+        <input id="name" name="name" type="text" inputmode="text" maxlength="20" placeholder="예: 김새봄">
+        <p id="name-hint" class="hint" hidden>이름을 먼저 적어 주세요.</p>
+        <button id="start-btn" class="btn primary" type="submit">말씀 뽑기</button>
+        <p id="loading" class="hint">말씀을 준비하고 있습니다…</p>
+      </form>
+    </section>
+
+    <!-- 2. 카드 뒤집기 -->
+    <section id="draw" class="screen" hidden>
+      <p class="eyebrow"><span id="draw-name"></span> 님</p>
+      <h2>기도하는 마음으로<br>카드를 눌러 주세요</h2>
+
+      <div id="flip" class="flip" role="button" tabindex="0" aria-label="카드를 눌러 말씀 확인">
+        <div class="face back">
+          <div class="back-inner">
+            <svg class="sprout" viewBox="-40 -40 80 80" aria-hidden="true">
+              <path d="M0 22 Q2 0 0 -6" stroke="currentColor" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+              <path d="M0 0 C-6 -14 -22 -14 -24 -2 C-16 2 -5 1 0 0Z" fill="currentColor"/>
+              <path d="M0 -4 C6 -20 24 -22 27 -8 C18 -2 6 -2 0 -4Z" fill="currentColor"/>
+            </svg>
+            <p class="back-year" data-year>2027</p>
+            <p class="back-title">새봄약속</p>
+            <p class="back-tap">눌러서 열기</p>
+          </div>
+        </div>
+        <div class="face front">
+          <p id="front-name" class="f-name"></p>
+          <p id="front-text" class="f-text"></p>
+          <p id="front-ref" class="f-ref"></p>
+          <p id="front-bless" class="f-bless"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 결과 -->
+    <section id="result" class="screen" hidden>
+      <p id="again-note" class="note" hidden>이미 받으신 말씀입니다.</p>
+      <article class="paper">
+        <p id="result-name" class="f-name"></p>
+        <p id="result-text" class="f-text"></p>
+        <p id="result-ref" class="f-ref"></p>
+        <p id="result-bless" class="f-bless"></p>
+      </article>
+
+      <div class="actions">
+        <button id="share-btn" class="btn primary" type="button">카카오톡 등으로 보내기</button>
+        <button id="save-btn" class="btn" type="button">사진으로 저장</button>
+        <button id="wall-btn" class="btn" type="button">배경화면용으로 저장</button>
+        <button id="other-btn" class="btn ghost" type="button">다른 사람 이름으로 뽑기</button>
+      </div>
+      <p class="foot">말씀 본문: 개역개정</p>
+    </section>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/card.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
