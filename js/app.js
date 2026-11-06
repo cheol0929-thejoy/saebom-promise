@@ -2,7 +2,6 @@
 (function () {
   const cfg = window.APP_CONFIG;
   const STORE_KEY = `saebom-promise-${cfg.YEAR}`; // { 이름: {no, at} }
-  const NAME_KEY = 'saebom-promise-lastname';
   const CACHE_KEY = 'saebom-promise-verses';
   const PENDING_KEY = 'saebom-promise-pending'; // 보내지 못한 기록
 
@@ -94,7 +93,6 @@
     const map = store.get(STORE_KEY, {});
     map[name] = { no: verse.no, verse, at: new Date().toISOString() };
     store.set(STORE_KEY, map);
-    store.set(NAME_KEY, name);
   }
 
   // ---------- 기록 전송 (4단계에서 LOG_URL을 채우면 동작) ----------
@@ -217,7 +215,7 @@
   // ---------- 시작 ----------
   async function init() {
     document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = cfg.YEAR; });
-    $('#name').value = store.get(NAME_KEY, '');
+    $('#name').value = ''; // 다른 사람이 같은 폰을 써도 이전 이름이 보이지 않게 비워 둡니다.
 
     $('#start-btn').disabled = true;
     try {

@@ -1,14 +1,9 @@
 // 말씀 카드 이미지(캔버스) 그리기 — 개인 모드·예배당 모드가 함께 씁니다.
 (function () {
   const C = {
-    night: '#141b3a',
-    dusk: '#2b2a5e',
-    dawn: '#e98a6b',
-    glow: '#f7c873',
-    gold: '#c9a34a',
-    paper: '#fffaf0',
-    ink: '#23253a',
-    sub: '#7a6a4f',
+    b1: '#1d64b3', b2: '#154f98', b3: '#0d3672', b4: '#0a2856',
+    paper: '#ffffff', ink: '#0f2a52', sub: '#5d7192', accent: '#154f98',
+    line: 'rgba(21,79,152,0.22)',
   };
 
   const SERIF = '"Noto Serif KR", serif';
@@ -69,45 +64,64 @@
     ctx.closePath();
   }
 
-  // 새벽 하늘 배경 + 떠오르는 해 + 별
-  function drawSky(ctx, W, H) {
-    const g = ctx.createLinearGradient(0, 0, 0, H);
-    g.addColorStop(0, C.night);
-    g.addColorStop(0.55, C.dusk);
-    g.addColorStop(1, C.dawn);
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, W, H);
-
-    const sun = ctx.createRadialGradient(W / 2, H * 1.02, 10, W / 2, H * 1.02, W * 0.75);
-    sun.addColorStop(0, 'rgba(255,226,150,0.95)');
-    sun.addColorStop(0.35, 'rgba(247,200,115,0.45)');
-    sun.addColorStop(1, 'rgba(247,200,115,0)');
-    ctx.fillStyle = sun;
-    ctx.fillRect(0, 0, W, H);
-
-    // 별: 위치를 고정 시드로 만들어 매번 같은 그림이 나오게 합니다.
-    let s = 7;
-    const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
-    for (let i = 0; i < 70; i++) {
-      const x = rnd() * W, y = rnd() * H * 0.45, r = rnd() * 2.2 + 0.6;
-      ctx.fillStyle = `rgba(255,248,225,${0.35 + rnd() * 0.55})`;
-      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
-    }
+  // 미세한 종이 결(노이즈) — 한 번 만들어 무늬로 반복
+  let grainCanvas = null;
+  function grain() {
+    if (grainCanvas) return grainCanvas;
+    const g = document.createElement('canvas'); g.width = g.height = 160;
+    const gx = g.getContext('2d'); const img = gx.createImageData(160, 160);
+    let s = 11; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < img.data.length; i += 4) { const v = 255 * r(); img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
+    gx.putImageData(img, 0, 0); grainCanvas = g; return g;
   }
 
-  // 새싹 문양 (새봄)
-  function drawSprout(ctx, cx, cy, s, color) {
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = s * 0.08; ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.moveTo(0, s * 0.5); ctx.quadraticCurveTo(s * 0.04, 0, 0, -s * 0.15); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0, 0);
-    ctx.bezierCurveTo(-s * 0.15, -s * 0.35, -s * 0.55, -s * 0.35, -s * 0.6, -s * 0.05);
-    ctx.bezierCurveTo(-s * 0.4, s * 0.05, -s * 0.12, s * 0.02, 0, 0); ctx.fill();
-    ctx.beginPath(); ctx.moveTo(0, -s * 0.1);
-    ctx.bezierCurveTo(s * 0.15, -s * 0.5, s * 0.6, -s * 0.55, s * 0.68, -s * 0.2);
-    ctx.bezierCurveTo(s * 0.45, -s * 0.05, s * 0.15, -s * 0.05, 0, -s * 0.1); ctx.fill();
-    ctx.restore();
+  function drawBackground(ctx, W, H) {
+    const lg = ctx.createLinearGradient(W * 0.1, 0, W * 0.9, H);
+    lg.addColorStop(0, C.b1); lg.addColorStop(0.38, C.b2); lg.addColorStop(0.74, C.b3); lg.addColorStop(1, C.b4);
+    ctx.fillStyle = lg; ctx.fillRect(0, 0, W, H);
+
+    const bloom = ctx.createRadialGradient(W * 0.82, -H * 0.05, 0, W * 0.82, -H * 0.05, W * 1.05);
+    bloom.addColorStop(0, 'rgba(150,200,255,0.34)'); bloom.addColorStop(1, 'rgba(150,200,255,0)');
+    ctx.fillStyle = bloom; ctx.fillRect(0, 0, W, H);
+
+    const shade = ctx.createRadialGradient(-W * 0.1, H * 1.05, 0, -W * 0.1, H * 1.05, W * 0.9);
+    shade.addColorStop(0, 'rgba(5,20,55,0.5)'); shade.addColorStop(1, 'rgba(5,20,55,0)');
+    ctx.fillStyle = shade; ctx.fillRect(0, 0, W, H);
+
+    ctx.save(); ctx.globalAlpha = 0.05; ctx.globalCompositeOperation = 'overlay';
+    ctx.fillStyle = ctx.createPattern(grain(), 'repeat'); ctx.fillRect(0, 0, W, H); ctx.restore();
+  }
+
+  // 네 갈래 새벽별
+  function drawStar(ctx, x, y, r) {
+    ctx.save(); ctx.translate(x, y);
+    ctx.shadowColor = 'rgba(190,225,255,0.9)'; ctx.shadowBlur = r * 0.9;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.moveTo(0, -r);
+    ctx.quadraticCurveTo(r * 0.12, -r * 0.12, r, 0);
+    ctx.quadraticCurveTo(r * 0.12, r * 0.12, 0, r);
+    ctx.quadraticCurveTo(-r * 0.12, r * 0.12, -r, 0);
+    ctx.quadraticCurveTo(-r * 0.12, -r * 0.12, 0, -r);
+    ctx.fill(); ctx.fill(); ctx.restore();
+  }
+
+  // 가장자리로 갈수록 사라지는 가는 수평선 + 별
+  function drawHorizon(ctx, W, y, starX, r) {
+    const g = ctx.createLinearGradient(0, 0, W, 0);
+    g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(0.18, 'rgba(255,255,255,0.3)');
+    g.addColorStop(starX / W, 'rgba(255,255,255,0.6)'); g.addColorStop(0.86, 'rgba(255,255,255,0.3)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, y - 1, W, 2);
+    drawStar(ctx, starX, y, r);
+  }
+
+  function spaced(ctx, text, x, y, spacing) {
+    // 글자 사이를 띄워 가운데 정렬로 쓰기
+    const chars = [...text]; const widths = chars.map((c) => ctx.measureText(c).width);
+    const total = widths.reduce((a, b) => a + b, 0) + spacing * (chars.length - 1);
+    let cx = x - total / 2; const align = ctx.textAlign; ctx.textAlign = 'left';
+    chars.forEach((c, i) => { ctx.fillText(c, cx, y); cx += widths[i] + spacing; });
+    ctx.textAlign = align;
   }
 
   /**
@@ -121,27 +135,27 @@
     const cv = document.createElement('canvas');
     cv.width = W; cv.height = H;
     const ctx = cv.getContext('2d');
-    drawSky(ctx, W, H);
-
-    // 상단 머리글
-    const topY = format === 'story' ? 250 : 150;
+    drawBackground(ctx, W, H);
     ctx.textAlign = 'center';
-    ctx.fillStyle = C.glow;
-    ctx.font = `700 34px ${SANS}`;
-    ctx.fillText(`${cfg.YEAR} ${cfg.CHURCH} 약속의 말씀`, W / 2, topY);
-    drawSprout(ctx, W / 2, topY - 70, format === 'story' ? 70 : 54, C.glow);
+
+    // 머리: 수평선과 별, 그 아래 한 줄
+    const story = format === 'story';
+    const hy = story ? 230 : 92;
+    drawHorizon(ctx, W, hy, W * 0.64, story ? 34 : 28);
+    ctx.fillStyle = 'rgba(255,255,255,0.82)';
+    ctx.font = `500 ${story ? 30 : 26}px ${SANS}`;
+    spaced(ctx, `${cfg.YEAR} ${cfg.CHURCH} 약속의 말씀`, W / 2, hy + (story ? 78 : 62), story ? 8 : 7);
 
     // 종이 카드
-    const px = 80, pw = W - 160;
-    const py = topY + 50;
-    const ph = H - py - (format === 'story' ? 280 : 110);
+    const px = 76, pw = W - 152;
+    const py = hy + (story ? 140 : 108);
+    const ph = H - py - (story ? 300 : 96);
     ctx.save();
-    ctx.shadowColor = 'rgba(0,0,0,0.35)'; ctx.shadowBlur = 40; ctx.shadowOffsetY = 12;
-    roundRect(ctx, px, py, pw, ph, 36);
-    ctx.fillStyle = C.paper; ctx.fill();
+    ctx.shadowColor = 'rgba(4,16,45,0.45)'; ctx.shadowBlur = 60; ctx.shadowOffsetY = 24;
+    roundRect(ctx, px, py, pw, ph, 30); ctx.fillStyle = C.paper; ctx.fill();
     ctx.restore();
-    roundRect(ctx, px + 22, py + 22, pw - 44, ph - 44, 24);
-    ctx.strokeStyle = C.gold; ctx.lineWidth = 3; ctx.stroke();
+    roundRect(ctx, px + 18, py + 18, pw - 36, ph - 36, 18);
+    ctx.strokeStyle = C.line; ctx.lineWidth = 2; ctx.stroke();
 
     const innerX = px + 90, innerW = pw - 180;
     let y = py + 120;
@@ -149,12 +163,9 @@
     // 이름
     if (name) {
       ctx.fillStyle = C.sub;
-      ctx.font = `500 36px ${SANS}`;
-      ctx.fillText(`${name} 님께 주신 말씀`, W / 2, y);
-      y += 40;
-      ctx.strokeStyle = 'rgba(201,163,74,0.6)'; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(W / 2 - 60, y); ctx.lineTo(W / 2 + 60, y); ctx.stroke();
-      y += 50;
+      ctx.font = `500 32px ${SANS}`;
+      spaced(ctx, `${name} 님께 주신 말씀`, W / 2, y, 3);
+      y += 60;
     }
 
     // 본문 + 장절 + 축복 문장을 한 묶음으로 보고, 카드 안 남은 공간의 가운데에 놓습니다.
@@ -162,7 +173,7 @@
     const regionH = regionBottom - regionTop;
     const bl = verse.blessing ? fitText(ctx, verse.blessing, innerW, 110, 34, 26, 500, SANS, 1.5) : null;
     const tailH = 40 /*간격*/ + 48 /*장절*/ + (bl ? 26 + bl.lines.length * bl.lh : 0);
-    const fit = fitText(ctx, verse.text, innerW, regionH - tailH, 64, 34, 700, SERIF, 1.62);
+    const fit = fitText(ctx, verse.text, innerW, regionH - tailH, 60, 32, 700, SERIF, 1.7);
     const groupH = fit.lines.length * fit.lh + tailH;
     let ty = regionTop + Math.max(0, (regionH - groupH) / 2) + fit.size;
 
@@ -170,11 +181,14 @@
     ctx.font = `700 ${fit.size}px ${SERIF}`;
     for (const ln of fit.lines) { ctx.fillText(ln, W / 2, ty); ty += fit.lh; }
 
-    // 장절
+    // 장절 (양옆 가는 선)
     const refY = ty - fit.lh + fit.size * 0.62 + 40 + 40;
-    ctx.fillStyle = C.gold;
-    ctx.font = `700 40px ${SERIF}`;
+    ctx.fillStyle = C.accent;
+    ctx.font = `700 38px ${SERIF}`;
     ctx.fillText(verse.ref, W / 2, refY);
+    const rw = ctx.measureText(verse.ref).width / 2 + 24;
+    ctx.fillStyle = 'rgba(21,79,152,0.35)';
+    ctx.fillRect(W / 2 - rw - 36, refY - 13, 36, 2); ctx.fillRect(W / 2 + rw, refY - 13, 36, 2);
 
     // 축복 한 줄
     if (bl) {
@@ -185,9 +199,9 @@
     }
 
     // 바닥글
-    ctx.fillStyle = 'rgba(255,250,240,0.85)';
-    ctx.font = `500 30px ${SANS}`;
-    ctx.fillText(`${cfg.APP_NAME} · 개역개정`, W / 2, H - (format === 'story' ? 150 : 45));
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.font = `500 24px ${SANS}`;
+    spaced(ctx, `${cfg.APP_NAME}  ·  개역개정`, W / 2, H - (story ? 170 : 38), 6);
     return cv;
   }
 
@@ -195,5 +209,5 @@
     return new Promise((res) => canvas.toBlob(res, 'image/png'));
   }
 
-  window.PromiseCard = { render, toBlob, drawSprout, colors: C };
+  window.PromiseCard = { render, toBlob, colors: C };
 })();

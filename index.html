@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>새봄약속 — 약속의 말씀 뽑기</title>
   <meta name="description" content="새봄교회 송구영신 약속의 말씀 뽑기">
-  <meta name="theme-color" content="#141b3a">
+  <meta name="theme-color" content="#154f98">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -19,33 +19,29 @@
 
     <!-- 1. 시작 -->
     <section id="start" class="screen">
-      <div class="sun" aria-hidden="true"></div>
+      <div class="horizon" aria-hidden="true"><svg class="star" viewBox="-50 -50 100 100" aria-hidden="true"><path d="M0-48C3-14 14-3 48 0 14 3 3 14 0 48-3 14-14 3-48 0-14-3-3-14 0-48Z" fill="currentColor"/></svg></div>
       <p class="eyebrow"><span data-year>2027</span> 새봄교회</p>
       <h1>약속의 말씀</h1>
-      <p class="lead">하나님께서 새해에 주시는<br>말씀 한 구절을 받아 보세요.</p>
+      <p class="lead">새해에 주시는 말씀 한 구절을<br>기도하는 마음으로 받아 보세요.</p>
 
-      <form id="start-form" class="panel" autocomplete="off">
+      <form id="start-form" class="form" autocomplete="off">
         <label for="name">이름</label>
-        <input id="name" name="name" type="text" inputmode="text" maxlength="20" placeholder="예: 김새봄">
+        <input id="name" name="saebom-who" type="text" autocomplete="off" inputmode="text" maxlength="20" placeholder="예: 김새봄">
         <p id="name-hint" class="hint" hidden>이름을 먼저 적어 주세요.</p>
-        <button id="start-btn" class="btn primary" type="submit">말씀 뽑기</button>
+        <button id="start-btn" class="btn primary" type="submit">말씀 받기</button>
         <p id="loading" class="hint">말씀을 준비하고 있습니다…</p>
       </form>
     </section>
 
     <!-- 2. 카드 뒤집기 -->
     <section id="draw" class="screen" hidden>
-      <p class="eyebrow"><span id="draw-name"></span> 님</p>
+      <p class="who"><span id="draw-name"></span> 님</p>
       <h2>기도하는 마음으로<br>카드를 눌러 주세요</h2>
 
       <div id="flip" class="flip" role="button" tabindex="0" aria-label="카드를 눌러 말씀 확인">
         <div class="face back">
           <div class="back-inner">
-            <svg class="sprout" viewBox="-40 -40 80 80" aria-hidden="true">
-              <path d="M0 22 Q2 0 0 -6" stroke="currentColor" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-              <path d="M0 0 C-6 -14 -22 -14 -24 -2 C-16 2 -5 1 0 0Z" fill="currentColor"/>
-              <path d="M0 -4 C6 -20 24 -22 27 -8 C18 -2 6 -2 0 -4Z" fill="currentColor"/>
-            </svg>
+            <div class="horizon" aria-hidden="true"><svg class="star center" viewBox="-50 -50 100 100" aria-hidden="true"><path d="M0-48C3-14 14-3 48 0 14 3 3 14 0 48-3 14-14 3-48 0-14-3-3-14 0-48Z" fill="currentColor"/></svg></div>
             <p class="back-year" data-year>2027</p>
             <p class="back-title">새봄약속</p>
             <p class="back-tap">눌러서 열기</p>
@@ -76,7 +72,7 @@
         <button id="wall-btn" class="btn" type="button">배경화면용으로 저장</button>
         <button id="other-btn" class="btn ghost" type="button">다른 사람 이름으로 뽑기</button>
       </div>
-      <p class="foot">말씀 본문: 개역개정</p>
+      <p class="foot">개역개정</p>
     </section>
 
     <div id="toast" class="toast" role="status" hidden></div>
